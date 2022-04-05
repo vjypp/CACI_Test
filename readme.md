@@ -1,10 +1,6 @@
-# <Client> - <Project>
+# Cyber-Duck Laravel task
 
-Brief of the project
-
-----
-
-All documentation should be kept in the `docs` folder
+Documentation should be kept in the `docs` folder
 
 ## TABLE OF CONTENTS
 
