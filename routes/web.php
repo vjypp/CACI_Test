@@ -17,8 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/sales', function () {
+    return view('coffee_sales');
+})->middleware(['auth'])->name('coffee.sales');
 
 require __DIR__.'/auth.php';
