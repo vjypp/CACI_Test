@@ -1,14 +1,13 @@
 version: '3'
 services:
-  apache:
-    container_name: coffee_shop_apache
-    build: .
-    environment:
-      WEB_DOCUMENT_ROOT: /var/www/public
-      WEB_ALIAS_DOMAIN: rcoa.localhost
-      WEB_PHP_SOCKET: php-fpm:9000
-    volumes: # Only shared dirs to apache (to be served)
+  nginx:
+    container_name: nginx
+    image: ${ARCHITECTURE:i386}/nginx:stable-alpine
+    volumes:
       - ./:/var/www/
+      - ./docker/site.conf:/etc/nginx/conf.d/site.conf
+    environment:
+      WEB_ALIAS_DOMAIN: coffee-shop.localhost
     networks:
       - network
     ports:
