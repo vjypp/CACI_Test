@@ -1,0 +1,24 @@
+version: '3'
+services:
+  apache:
+    container_name: coffee_shop_apache
+    build: .
+    environment:
+      WEB_DOCUMENT_ROOT: /var/www/public
+      WEB_ALIAS_DOMAIN: rcoa.localhost
+      WEB_PHP_SOCKET: php-fpm:9000
+    volumes: # Only shared dirs to apache (to be served)
+      - ./:/var/www/
+    networks:
+      - network
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - php-fpm
+volumes:
+  db_data:
+    driver: "local"
+networks:
+  network:
+    driver: "bridge"
