@@ -12,6 +12,16 @@ Note: if you don't use Chrome please add this to your `/etc/hosts` file:
 
 * `127.0.0.1 coffee-shop.localhost`
 
+## Setup compatibility
+
+If you are running on architecture the docker setup image may not work, we tested with:
+- Mac Intel (amd64) - Default configuration
+- Mac M1 (arm64v8)
+
+[List of available architectures](https://github.com/docker-library/official-images#architectures-other-than-amd64)
+
+You can change the architecture use by updating `.env.example` `ARCHITECTURE` env variable before running `make install`
+
 ## Setup
 
 **Application base URL:** `coffee-shop.localhost`
