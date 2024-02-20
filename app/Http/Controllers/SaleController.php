@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Product;
+use App\Rules\ExistsProductRule;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -24,8 +26,10 @@ class SaleController extends Controller
         $constants['shipping_cost'] = config('constants.shipping_cost');
         $constants['profit_margin_percent'] = config('constants.profit_margin_percent');
 
-        $orders = Order::latest()->get();
-        return view('sales.index', compact('orders', 'constants'));
+        $products = Product::all();
+
+        $orders = Order::with(['product'])->latest()->get();
+        return view('sales.index', compact('orders', 'constants', 'products'));
     }
 
     /**
@@ -39,13 +43,22 @@ class SaleController extends Controller
     {
         $request->validate([
             'quantity' => ['required', 'integer', 'min:1'],
-            'unit_cost' => ['required', 'numeric', 'min:0.01']
+            'unit_cost' => ['required', 'numeric', 'min:0.01'],
+            'product_id' => ['required', new ExistsProductRule],
         ]);
 
+        $product = Product::find($request->product_id);
+
         $shipping_cost = config('constants.shipping_cost');
-        $profit_margin_percent = config('constants.profit_margin_percent');
+        if($product) {
+            $profit_margin_percent = $product->profit_margin_percent;
+        } else {
+            $profit_margin_percent = config('constants.profit_margin_percent');
+        }
+        
 
         $quantity = $request->quantity;
+        $product_id = $request->product_id;
         $unit_cost = $request->unit_cost;
         $cost = $quantity*$unit_cost;
         $profit_margin = $profit_margin_percent/100;
@@ -55,6 +68,7 @@ class SaleController extends Controller
         $order = Order::create([
             'quantity' => $request->quantity,
             'cost' => $request->unit_cost,
+            'product_id' => $product_id,
             'selling_price' => $selling_price
         ]);
 
