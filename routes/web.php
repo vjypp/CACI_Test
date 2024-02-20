@@ -13,15 +13,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Http\Controllers\SaleController;
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
 Route::redirect('/dashboard', '/sales');
 
-Route::get('/sales', function () {
-    return view('coffee_sales');
-})->middleware(['auth'])->name('coffee.sales');
+// Route::get('/sales', function () {
+//     return view('sales.index');
+// })->middleware(['auth'])->name('coffee.sales');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/sales', [SaleController::class, 'index'])->name('coffee.sales');
+    Route::post('/sales', [SaleController::class, 'store'])->name('coffee.sales.save');
+});
+
 
 Route::get('/shipping-partners', function () {
     return view('shipping_partners');
