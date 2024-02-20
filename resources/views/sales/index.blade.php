@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label class="" for="quantity">Product:</label>
                     <br>
-                    <select class="form-control" name="product_id" id="product_id">
+                    <select class="form-control" name="product_id" id="product_id" onchange="calculateSellingPrice()">
                     @foreach($products as $product)
                     <option value="{{$product->id}}">{{$product->product_name}}</option>
                     @endforeach
@@ -61,9 +61,9 @@
                         @foreach($orders as $row)
                     <tr>
                         <td>{{$row->product ? $row->product->product_name:'Gold Coffee'}}</td>
-                        <td>{{$row->quantity}}</td>
-                        <td>£{{$row->cost}}</td>
-                        <td>£{{$row->selling_price}}</td>
+                        <td>{{$row->quantity ?? ''}}</td>
+                        <td>£{{$row->cost ?? ''}}</td>
+                        <td>£{{$row->selling_price ?? ''}}</td>
                     </tr>
                     @endforeach
                     </tbody>
